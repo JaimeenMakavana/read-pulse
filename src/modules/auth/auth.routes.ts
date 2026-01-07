@@ -31,18 +31,6 @@ export async function authRoutes(app: FastifyInstance): Promise<void> {
               },
             },
           },
-          400: {
-            type: 'object',
-            properties: {
-              error: { type: 'string' },
-            },
-          },
-          500: {
-            type: 'object',
-            properties: {
-              error: { type: 'string' },
-            },
-          },
         },
       },
     },
@@ -69,18 +57,6 @@ export async function authRoutes(app: FastifyInstance): Promise<void> {
                   timezone: { type: 'string' },
                 },
               },
-            },
-          },
-          401: {
-            type: 'object',
-            properties: {
-              error: { type: 'string' },
-            },
-          },
-          500: {
-            type: 'object',
-            properties: {
-              error: { type: 'string' },
             },
           },
         },

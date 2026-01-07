@@ -16,7 +16,10 @@ export const createSessionHandler = async (
   reply: FastifyReply
 ): Promise<void> => {
   try {
-    const userId = (request.user as { id: string }).id;
+    if (!request.user) {
+      return reply.status(401).send({ error: 'Authentication required' });
+    }
+    const userId = request.user.id;
     const session = await createSession(request.server, request.body, userId);
     return reply.status(201).send({
       id: session.id,

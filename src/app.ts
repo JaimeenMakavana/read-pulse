@@ -19,6 +19,7 @@ export const createApp = async (): Promise<FastifyInstance> => {
   const env = getEnv();
   const app = Fastify({
     logger: env.NODE_ENV === 'development',
+    responseValidation: false,
   });
 
   // Register CORS

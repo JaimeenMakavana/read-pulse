@@ -30,6 +30,7 @@ const jwtPlugin: FastifyPluginAsync = async (app) => {
       request.user = decoded as { id: string; email: string };
     } catch (error) {
       reply.status(401).send({ error: 'Invalid or missing token' });
+      return;
     }
   });
 };

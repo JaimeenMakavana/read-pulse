@@ -21,7 +21,10 @@ export const createBookHandler = async (
   reply: FastifyReply
 ): Promise<void> => {
   try {
-    const userId = (request.user as { id: string }).id;
+    if (!request.user) {
+      return reply.status(401).send({ error: 'Authentication required' });
+    }
+    const userId = request.user.id;
     const book = await createBook(request.server, request.body, userId);
     return reply.status(201).send(book);
   } catch (error) {
@@ -45,7 +48,10 @@ export const getBooksHandler = async (
   reply: FastifyReply
 ): Promise<void> => {
   try {
-    const userId = (request.user as { id: string }).id;
+    if (!request.user) {
+      return reply.status(401).send({ error: 'Authentication required' });
+    }
+    const userId = request.user.id;
     const result = await getBooks(request.server, userId, request.query);
     return reply.status(200).send(result);
   } catch (error) {
@@ -69,7 +75,10 @@ export const getBookByIdHandler = async (
   reply: FastifyReply
 ): Promise<void> => {
   try {
-    const userId = (request.user as { id: string }).id;
+    if (!request.user) {
+      return reply.status(401).send({ error: 'Authentication required' });
+    }
+    const userId = request.user.id;
     const book = await getBookById(request.server, request.params.id, userId);
     return reply.status(200).send(book);
   } catch (error) {
@@ -93,7 +102,10 @@ export const updateBookHandler = async (
   reply: FastifyReply
 ): Promise<void> => {
   try {
-    const userId = (request.user as { id: string }).id;
+    if (!request.user) {
+      return reply.status(401).send({ error: 'Authentication required' });
+    }
+    const userId = request.user.id;
     const book = await updateBook(request.server, request.params.id, request.body, userId);
     return reply.status(200).send(book);
   } catch (error) {
@@ -117,7 +129,10 @@ export const deleteBookHandler = async (
   reply: FastifyReply
 ): Promise<void> => {
   try {
-    const userId = (request.user as { id: string }).id;
+    if (!request.user) {
+      return reply.status(401).send({ error: 'Authentication required' });
+    }
+    const userId = request.user.id;
     await deleteBook(request.server, request.params.id, userId);
     return reply.status(200).send({ message: 'Book deleted successfully' });
   } catch (error) {

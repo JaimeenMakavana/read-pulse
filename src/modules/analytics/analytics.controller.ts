@@ -19,7 +19,10 @@ export const getSpeedHandler = async (
   reply: FastifyReply
 ): Promise<void> => {
   try {
-    const userId = (request.user as { id: string }).id;
+    if (!request.user) {
+      return reply.status(401).send({ error: 'Authentication required' });
+    }
+    const userId = request.user.id;
     const result = await getReadingSpeedByTimeOfDay(request.server, userId, request.query);
     return reply.status(200).send(result);
   } catch (error) {
@@ -43,7 +46,10 @@ export const getVelocityHandler = async (
   reply: FastifyReply
 ): Promise<void> => {
   try {
-    const userId = (request.user as { id: string }).id;
+    if (!request.user) {
+      return reply.status(401).send({ error: 'Authentication required' });
+    }
+    const userId = request.user.id;
     const result = await getReadingVelocity(request.server, userId, request.query);
     return reply.status(200).send(result);
   } catch (error) {
@@ -67,7 +73,10 @@ export const getSummaryHandler = async (
   reply: FastifyReply
 ): Promise<void> => {
   try {
-    const userId = (request.user as { id: string }).id;
+    if (!request.user) {
+      return reply.status(401).send({ error: 'Authentication required' });
+    }
+    const userId = request.user.id;
     const result = await getReadingSummary(request.server, userId, request.query);
     return reply.status(200).send(result);
   } catch (error) {
