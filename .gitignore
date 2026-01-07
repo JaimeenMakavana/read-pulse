@@ -59,3 +59,5 @@ prisma/migrations/migration_lock.toml
 # Optional: Keep package-lock.json (uncomment if you want to ignore it)
 # package-lock.json
 
+
+/src/generated/prisma

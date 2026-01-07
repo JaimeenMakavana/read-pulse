@@ -1,0 +1,68 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Enums ensure data integrity at the database level
+enum BookStatus {
+  READING
+  COMPLETED
+  PAUSED
+  DROPPED
+  WISHLIST
+}
+
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  passwordHash  String   // Store hashed passwords only!
+  timezone      String   @default("Asia/Kolkata") // Critical for bio-rhythm calc
+  createdAt     DateTime @default(now())
+  
+  books         Book[]
+}
+
+model Book {
+  id          String     @id @default(uuid())
+  title       String
+  author      String
+  totalPages  Int        // Required to calculate progress %
+  status      BookStatus @default(READING)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  userId      String
+  user        User       @relation(fields: [userId], references: [id])
+  
+  sessions    ReadingSession[]
+
+  @@index([userId]) // Index for faster lookups by user
+}
+
+model ReadingSession {
+  id              String   @id @default(uuid())
+  
+  startTime       DateTime
+  endTime         DateTime
+  
+  startPage       Int
+  endPage         Int
+  
+  // We store these pre-calculated values to avoid expensive math during READ queries
+  durationSeconds Int      
+  pagesRead       Int      
+
+  bookId          String
+  book            Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  
+  createdAt       DateTime @default(now())
+
+  // Composite index: We will frequently query sessions by book AND time
+  @@index([bookId, startTime]) 
+}

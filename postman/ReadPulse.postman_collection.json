@@ -1,0 +1,232 @@
+{
+  "info": {
+    "name": "ReadPulse API",
+    "description": "Postman collection for ReadPulse backend (Auth, Books, Sessions, Analytics).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Signup",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/v1/auth/signup", "host": ["{{baseUrl}}"], "path": ["api","v1","auth","signup"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"Password123!\",\n  \"timezone\": \"Asia/Kolkata\"\n}"
+            },
+            "description": "Create a new user account."
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/v1/auth/login", "host": ["{{baseUrl}}"], "path": ["api","v1","auth","login"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"Password123!\"\n}"
+            },
+            "description": "Authenticate and receive a JWT token."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Books",
+      "item": [
+        {
+          "name": "Create Book",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/v1/books", "host": ["{{baseUrl}}"], "path": ["api","v1","books"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Clean Code\",\n  \"author\": \"Robert C. Martin\",\n  \"totalPages\": 464,\n  \"status\": \"READING\"\n}"
+            },
+            "description": "Create a new book."
+          }
+        },
+        {
+          "name": "List Books",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/books?status=READING&limit=50&offset=0",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","v1","books"],
+              "query": [
+                { "key": "status", "value": "READING" },
+                { "key": "limit", "value": "50" },
+                { "key": "offset", "value": "0" }
+              ]
+            },
+            "description": "Get books for authenticated user."
+          }
+        },
+        {
+          "name": "Get Book By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/books/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","v1","books",":id"],
+              "variable": [{ "key": "id", "value": "REPLACE_WITH_BOOK_ID" }]
+            },
+            "description": "Get a book by ID."
+          }
+        },
+        {
+          "name": "Update Book",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/books/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","v1","books",":id"],
+              "variable": [{ "key": "id", "value": "REPLACE_WITH_BOOK_ID" }]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"COMPLETED\"\n}"
+            },
+            "description": "Update a book."
+          }
+        },
+        {
+          "name": "Delete Book",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/books/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","v1","books",":id"],
+              "variable": [{ "key": "id", "value": "REPLACE_WITH_BOOK_ID" }]
+            },
+            "description": "Delete a book."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Sessions",
+      "item": [
+        {
+          "name": "Create Session",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/v1/sessions", "host": ["{{baseUrl}}"], "path": ["api","v1","sessions"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bookId\": \"REPLACE_WITH_BOOK_ID\",\n  \"startPage\": 10,\n  \"endPage\": 35,\n  \"startTime\": \"2025-01-01T10:00:00.000Z\",\n  \"endTime\": \"2025-01-01T11:30:00.000Z\"\n}"
+            },
+            "description": "Create a reading session with auto-calculated metrics."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Analytics",
+      "item": [
+        {
+          "name": "Speed by Time of Day",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/speed?startDate=2025-01-01T00:00:00.000Z&endDate=2025-12-31T23:59:59.000Z&limit=100",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","v1","analytics","speed"],
+              "query": [
+                { "key": "startDate", "value": "2025-01-01T00:00:00.000Z" },
+                { "key": "endDate", "value": "2025-12-31T23:59:59.000Z" },
+                { "key": "limit", "value": "100" }
+              ]
+            },
+            "description": "Reading speed grouped by hour of day."
+          }
+        },
+        {
+          "name": "Velocity",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/velocity?limit=100",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","v1","analytics","velocity"],
+              "query": [{ "key": "limit", "value": "100" }]
+            },
+            "description": "Velocity trend and predictions."
+          }
+        },
+        {
+          "name": "Summary",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/summary?startDate=2025-01-01T00:00:00.000Z&endDate=2025-12-31T23:59:59.000Z",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","v1","analytics","summary"],
+              "query": [
+                { "key": "startDate", "value": "2025-01-01T00:00:00.000Z" },
+                { "key": "endDate", "value": "2025-12-31T23:59:59.000Z" }
+              ]
+            },
+            "description": "Overall reading statistics."
+          }
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      { "key": "token", "value": "{{token}}", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "token", "value": "" }
+  ]
+}
+
