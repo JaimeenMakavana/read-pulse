@@ -35,4 +35,27 @@ build/
 # Testing
 coverage/
 .nyc_output/
+.jest/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+
+# Prisma (if used)
+prisma/migrations/.migrate/
+prisma/migrations/migration_lock.toml
+
+# Cursor IDE
+.cursor/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+.turbo/
+
+# Optional: Keep package-lock.json (uncomment if you want to ignore it)
+# package-lock.json
 
