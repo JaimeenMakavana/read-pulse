@@ -1,10 +1,10 @@
-import { FastifyInstance } from 'fastify';
-import { CreateBookInput, UpdateBookInput, GetBooksQuery } from './book.schema';
-import { NotFoundError, ForbiddenError } from '../../shared/errors';
+import { FastifyInstance } from "fastify";
+import { CreateBookInput, UpdateBookInput, GetBooksQuery } from "./book.schema";
+import { NotFoundError, ForbiddenError } from "../../shared/errors";
 
 /**
  * Creates a new book for a user.
- * 
+ *
  * @param app - Fastify instance with prisma decorator
  * @param data - Book creation data
  * @param userId - ID of the user creating the book
@@ -27,7 +27,7 @@ export const createBook = async (
 
 /**
  * Gets all books for a user with optional filtering.
- * 
+ *
  * @param app - Fastify instance with prisma decorator
  * @param userId - ID of the user
  * @param query - Query parameters (status, limit, offset)
@@ -48,7 +48,7 @@ export const getBooks = async (
       where,
       take: query.limit,
       skip: query.offset,
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
     }),
     app.prisma.book.count({ where }),
   ]);
@@ -58,7 +58,7 @@ export const getBooks = async (
 
 /**
  * Gets a single book by ID.
- * 
+ *
  * @param app - Fastify instance with prisma decorator
  * @param bookId - ID of the book
  * @param userId - ID of the user (for ownership validation)
@@ -76,11 +76,11 @@ export const getBookById = async (
   });
 
   if (!book) {
-    throw new NotFoundError('Book');
+    throw new NotFoundError("Book");
   }
 
   if (book.userId !== userId) {
-    throw new ForbiddenError('You do not have access to this book');
+    throw new ForbiddenError("You do not have access to this book");
   }
 
   return book;
@@ -88,7 +88,7 @@ export const getBookById = async (
 
 /**
  * Updates a book.
- * 
+ *
  * @param app - Fastify instance with prisma decorator
  * @param bookId - ID of the book
  * @param data - Update data
@@ -109,11 +109,11 @@ export const updateBook = async (
   });
 
   if (!existingBook) {
-    throw new NotFoundError('Book');
+    throw new NotFoundError("Book");
   }
 
   if (existingBook.userId !== userId) {
-    throw new ForbiddenError('You do not have access to this book');
+    throw new ForbiddenError("You do not have access to this book");
   }
 
   const book = await app.prisma.book.update({
@@ -126,7 +126,7 @@ export const updateBook = async (
 
 /**
  * Deletes a book.
- * 
+ *
  * @param app - Fastify instance with prisma decorator
  * @param bookId - ID of the book
  * @param userId - ID of the user (for ownership validation)
@@ -144,15 +144,14 @@ export const deleteBook = async (
   });
 
   if (!book) {
-    throw new NotFoundError('Book');
+    throw new NotFoundError("Book");
   }
 
   if (book.userId !== userId) {
-    throw new ForbiddenError('You do not have access to this book');
+    throw new ForbiddenError("You do not have access to this book");
   }
 
   await app.prisma.book.delete({
     where: { id: bookId },
   });
 };
-
