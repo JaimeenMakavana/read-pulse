@@ -1,8 +1,8 @@
-import { FastifyPluginAsync } from 'fastify';
-import swagger from '@fastify/swagger';
-import swaggerUi from '@fastify/swagger-ui';
-import fp from 'fastify-plugin';
-import { getEnv } from '../config/env';
+import { FastifyPluginAsync } from "fastify";
+import swagger from "@fastify/swagger";
+import swaggerUi from "@fastify/swagger-ui";
+import fp from "fastify-plugin";
+import { getEnv } from "../config/env";
 
 /**
  * Swagger/OpenAPI documentation plugin for Fastify.
@@ -13,22 +13,22 @@ const swaggerPlugin: FastifyPluginAsync = async (app) => {
   await app.register(swagger, {
     openapi: {
       info: {
-        title: 'ReadPulse API',
-        description: 'Bio-Rhythm Reading Tracker Backend',
-        version: '1.0.0',
+        title: "ReadPulse API",
+        description: "Bio-Rhythm Reading Tracker Backend",
+        version: "1.0.0",
       },
       servers: [
         {
           url: `http://localhost:${env.PORT}`,
-          description: 'Development server',
+          description: "Development server",
         },
       ],
       components: {
         securitySchemes: {
           bearerAuth: {
-            type: 'http',
-            scheme: 'bearer',
-            bearerFormat: 'JWT',
+            type: "http",
+            scheme: "bearer",
+            bearerFormat: "JWT",
           },
         },
       },
@@ -36,13 +36,12 @@ const swaggerPlugin: FastifyPluginAsync = async (app) => {
   });
 
   await app.register(swaggerUi, {
-    routePrefix: '/docs',
+    routePrefix: "/docs",
     uiConfig: {
-      docExpansion: 'list',
+      docExpansion: "list",
       deepLinking: false,
     },
   });
 };
 
 export default fp(swaggerPlugin);
-

@@ -48,7 +48,7 @@ export const signup = async (app: FastifyInstance, data: SignupInput) => {
     data: {
       email: data.email,
       passwordHash,
-      timezone: data.timezone,
+      timezone: data.timezone ?? 'Asia/Kolkata',
     },
     select: {
       id: true,

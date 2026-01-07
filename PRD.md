@@ -186,3 +186,8 @@ readpulse-backend/
         └── calculator.test.ts
 
 ```
+
+
+### useful task
+ - book category
+ 

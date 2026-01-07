@@ -30,7 +30,7 @@
     "fastify-plugin": "^5.0.1",
     "fastify-type-provider-zod": "^5.1.0",
     "fastly-mcp-server": "^1.0.4",
-    "zod": "^3.25.67"
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
